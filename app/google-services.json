@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "902315871124",
+    "project_id": "cryptotracker-fe072",
+    "storage_bucket": "cryptotracker-fe072.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902315871124:android:9b5095df5cce54aebc9d81",
+        "android_client_info": {
+          "package_name": "com.nathit.cryptotacker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902315871124-ge76cqseug9pvjg53tl319tb4p8q7lk8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nathit.cryptotacker",
+            "certificate_hash": "9af2fb7e0ecab43cd52d1a624f4891824b253989"
+          }
+        },
+        {
+          "client_id": "902315871124-voc27emgi4q9kglcrjqch4jocssjq28d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4JVAD1xLbW-dz74E4aChSPb8ZZQksa_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902315871124-voc27emgi4q9kglcrjqch4jocssjq28d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
