@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -35,11 +36,12 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String FILE_EMAIL = "EmailPassSave";
-    EditText Email, Password;
+
+    private static final String FILE_EMAIL = "rememberMe";
+    TextInputEditText Email, Password;
     ProgressBar progressBar;
     FirebaseAuth firebaseAuth;
-    String uid, etName;
+    String uid,etName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         Email = findViewById(R.id.email);
         Password = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressBar);
+
 
         //save email and password click checkbox
         final CheckBox mCheckBoxRemember = (CheckBox) findViewById(R.id.remember_me);
@@ -64,12 +67,13 @@ public class LoginActivity extends AppCompatActivity {
             mCheckBoxRemember.setChecked(false);
         }
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
         //show textview savePref
         Email.setText(etEmail);
         Password.setText(etPassword);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        /*
         TextView nextToRegister = (TextView) findViewById(R.id.nextToRegister);
         nextToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +84,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+         */
+
         Button LoginBtn = (Button) findViewById(R.id.LoginBtn);
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                 String etEmail = Email.getText().toString().trim();
                 String etPassword = Password.getText().toString().trim();
                 String checkPassword = "^(?=\\S+$).{6,20}$";
+                if (!Patterns.EMAIL_ADDRESS.matcher(etEmail).matches()) {
+                    Email.setError("Please enter your email address completely.");
+                    Email.requestFocus();
+                } else if (TextUtils.isEmpty(etPassword)) {
+                    Password.setError("Please enter your password");
+                    Password.requestFocus();
+                } else if (!etPassword.matches(checkPassword)) {
+                    Password.setError("Please enter a password of 6 characters or more.");
+                    Password.requestFocus();
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    loginUser(etName, etEmail, etPassword);
+                }
 
                 if (mCheckBoxRemember.isChecked()) {
                     editor.putBoolean("checked", true);
@@ -122,10 +141,12 @@ public class LoginActivity extends AppCompatActivity {
                         getSharedPreferences(FILE_EMAIL, MODE_PRIVATE).edit().clear().commit();
                         loginUser(etName, etEmail, etPassword);
                     }
+
                 }
             }
         });
 
+        /*
         TextView ForgotPassword = (TextView) findViewById(R.id.ForgotPassword);
         ForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +189,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+         */
+
     }
 
     private void loginUser(String etName, String etEmail, String etPassword) {
@@ -191,17 +214,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                 reference.child(uid).setValue(hashMap);
                             }
-                            if (user.isEmailVerified()) {
-                                Toast.makeText(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, CryptoActivity.class));
                                 progressBar.setVisibility(View.GONE);
                                 finish();
-                            } else {
-                                user.sendEmailVerification();
-                                firebaseAuth.signOut();
-                                progressBar.setVisibility(View.GONE);
-                                showAlertDialog();
-                            }
                         } else {
                             try {
                                 throw task.getException();
@@ -220,6 +235,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /*
     private void showAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Email is not verified, please check.");
@@ -238,6 +254,10 @@ public class LoginActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+     */
+
+    /*
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -250,12 +270,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+     */
+
+
     private void StoreDataUsingSharedPref(String etEmail, String etPassword) {
         SharedPreferences.Editor editor = getSharedPreferences(FILE_EMAIL, MODE_PRIVATE).edit();
         editor.putString("etEmail", etEmail);
         editor.putString("etPassword", etPassword);
         editor.apply();
     }
+
 
     private void init_screen() {
         final int flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
